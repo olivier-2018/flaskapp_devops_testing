@@ -2,16 +2,31 @@ Thank you for installing flaskapp.
 
 To access your application:
 
-1. If you exposed the service as ClusterIP, port-forward locally:
+1. Helm chart {{ .Release.Name }} has been installed.
+   Docker image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+   The application is running in your Kubernetes cluster.
 
-   kubectl port-forward svc/{{ .Release.Name }}-flaskapp-svc {{ .Values.service.port | default 80 }}:{{ .Values.containerPort | default 5000 }}
+2. Port-forward the service created for this release:
 
-2. Open http://localhost:{{ .Values.service.port | default 80 }} in your browser.
+   kubectl port-forward service/{{ .Values.appName }} 5000:80
+
+3. Open http://localhost:5000 in your browser.
+
+4. Notes: 
+   In case you use helm upgrade to update the CUSTOM_HEADER, you will need to either:
+   - restart the pod: kubectl delete pod <pod-name>
+   - restart the deployment: kubectl rollout restart deployment <deployment-name>
+   - rename the configmap (which will restart the pod automatically)
 
 To set a custom header/message for the app at install/upgrade time, pass `--set configmap.data.CUSTOM_HEADER="Your message"`.
 
 Example:
 
-  helm install my-dev ./charts/flaskapp \
+  helm install my-flaskapp ./charts/flaskapp \
     --set configmap.data.CUSTOM_HEADER="Hello from Dev via ConfigMap" \
-    --set image.repository=yourrepo/flaskapp --set image.tag=latest
+    --set image.name=yourrepo/flaskapp --set image.tag=latest
+
+  helm upgrade my-flaskapp ./charts/flaskapp \
+    --set configmap.data.CUSTOM_HEADER="Updated header from helm upgrade" 
+    --set configmap.name=new-configmap-name
+    

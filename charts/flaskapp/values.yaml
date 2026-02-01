@@ -1,6 +1,15 @@
+appName: flaskapp
+
 replicaCount: 1
 
 # ConfigMap containing key(s) that will be mounted into the pod
 configmap:
+  name: flaskapp-configmap
   data:
     CUSTOM_HEADER: 'This is on the DEV environment of the Helm app!'
+
+# Image settings
+image:
+  name: olivier2018/flaskapp
+  tag: latest
+

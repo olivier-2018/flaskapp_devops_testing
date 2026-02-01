@@ -16,7 +16,6 @@ COPY templates /app/templates
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Default port
-ENV PORT=5000
 EXPOSE 5000
 
 # Run the app

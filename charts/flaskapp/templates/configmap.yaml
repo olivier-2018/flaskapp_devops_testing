@@ -1,9 +1,6 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-flaskapp-config
-  labels:
-    app.kubernetes.io/name: flaskapp
-    app.kubernetes.io/instance: {{ .Release.Name }}
+  name: {{ .Values.configmap.name }}
 data:
-{{ toYaml .Values.configmap.data | indent 2 }}
+  CUSTOM_HEADER: {{ .Values.configmap.data.CUSTOM_HEADER }}
