@@ -1,0 +1,17 @@
+Thank you for installing flaskapp.
+
+To access your application:
+
+1. If you exposed the service as ClusterIP, port-forward locally:
+
+   kubectl port-forward svc/{{ .Release.Name }}-flaskapp-svc {{ .Values.service.port | default 80 }}:{{ .Values.containerPort | default 5000 }}
+
+2. Open http://localhost:{{ .Values.service.port | default 80 }} in your browser.
+
+To set a custom header/message for the app at install/upgrade time, pass `--set configmap.data.CUSTOM_HEADER="Your message"`.
+
+Example:
+
+  helm install my-dev ./charts/flaskapp \
+    --set configmap.data.CUSTOM_HEADER="Hello from Dev via ConfigMap" \
+    --set image.repository=yourrepo/flaskapp --set image.tag=latest

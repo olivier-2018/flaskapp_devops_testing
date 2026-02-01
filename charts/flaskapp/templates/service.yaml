@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-flaskapp-svc
+  labels:
+    app.kubernetes.io/name: flaskapp
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  type: {{ .Values.service.type | default "ClusterIP" }}
+  ports:
+    - port: {{ .Values.service.port | default 80 }}
+      targetPort: {{ .Values.containerPort | default 5000 }}
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: flaskapp
+    app.kubernetes.io/instance: {{ .Release.Name }}
