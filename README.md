@@ -23,7 +23,7 @@ docker run -e CUSTOM_HEADER="My Custom Value" -p 3000:3000 flaskapp:latest
 
 ## Build and run on K8s cluster
 
-### Build 
+### Build locally
 
 ```bash
 # Option A: Switch Docker CLI to Minikube's daemon and build directly in Minikube
@@ -33,6 +33,13 @@ docker build -t flaskapp:latest .
 # Option B: Build image on local docker and copy it to Minikube (also case if image already built locally)
 docker build -t flaskapp:latest .  
 minikube image load flaskapp:latest  # 
+```
+
+### Build on Dockerhub
+```bash
+docker login --username  <DockerHub-Username> 
+docker build --no-cache -t <DockerHub-Username>/flaskapp:latest .
+docker push <DockerHub-Username>/flaskapp:latest
 ```
 
 ### Run app using Helm:
@@ -92,11 +99,11 @@ helm upgrade --install flaskapp-helm ./charts/flaskapp --set configmap.data.CUST
 ## Tips & troubleshooting
 - Replace image name to include a dockerhub repository and build directly to it:
 ```bash
-docker build -t <DOCKERHUB-REPO>/flaskapp:latest .  
+docker build -t <DockerHub-Username>/flaskapp:latest .  
 ```
 - If pods fail with image pull errors, confirm the image name/tag is published and reachable. Example to test locally:
 ```bash
-docker pull <DOCKERHUB-REPO>/flaskapp:latest
+docker pull <DockerHub-Username>/flaskapp:latest
 ```
 - Private registry: create a Docker registry secret and add it to the chart via `imagePullSecrets` (or pass it into the rendered manifest).
 - Preview rendered manifests without installing:
