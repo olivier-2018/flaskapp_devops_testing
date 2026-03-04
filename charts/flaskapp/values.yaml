@@ -10,6 +10,8 @@ configmap:
 
 # Image settings
 image:
-  name: olivier2018/flaskapp
-  tag: latest
+  # name: olivier2018/flaskapp
+  # tag: latest
+  name: flaskapp
+  tag: v1
 

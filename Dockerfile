@@ -1,8 +1,5 @@
 FROM python:3.11-alpine
 
-# Install minimal build deps
-RUN apk add --no-cache gcc musl-dev
-
 # Create working directory
 WORKDIR /app
 
@@ -12,11 +9,14 @@ COPY app.py /app/
 COPY static /app/static
 COPY templates /app/templates
 
+# Set environment variable for Flask
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=3000
+ENV CUSTOM_HEADER="My Default Containerized Webapp"
+
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Default port
-EXPOSE 5000
-
 # Run the app
-CMD ["python", "app.py"]
+CMD ["flask", "run"]
